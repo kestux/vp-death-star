@@ -17,6 +17,15 @@ class DroidPathGeneratorTest extends TestCase
     }
 
     /**
+     * @covers ::__construct
+     */
+    public function testThrowsWhenInitialPathIsUnknown(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new DroidPathGenerator([1, 5, -1]);
+    }
+
+    /**
      * @covers ::getNewPath
      */
     public function testAdsRightWhenGoneAndLastStepWasRight(): void

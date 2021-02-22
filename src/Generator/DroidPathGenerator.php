@@ -15,6 +15,7 @@ class DroidPathGenerator
         self::RESULT_LOST,
         self::RESULT_SUCCESS,
     ];
+    private const ALLOWED_STEPS = [-1, 0, 1];
 
     /** @var int[]  */
     private array $path;
@@ -25,6 +26,15 @@ class DroidPathGenerator
      * @param int[] $initialPath
      */
     public function __construct(array $initialPath = []) {
+        foreach ($initialPath as $step) {
+            if (!\in_array($step, self::ALLOWED_STEPS)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'Unrecognized initial path "%s"',
+                    \implode(', ', $initialPath)
+                ));
+            }
+        }
+
         $this->path = $initialPath;
     }
 
