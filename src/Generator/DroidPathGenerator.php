@@ -7,18 +7,14 @@ class DroidPathGenerator
     public const RESULT_CRASHED = 'crashed';
     public const RESULT_LOST = 'lost';
     public const RESULT_SUCCESS = 'success';
-    public const STEP_FORWARD = 0;
-    public const STEP_RIGHT = 1;
-    public const STEP_LEFT = -1;
 
-        /** @var int[]  */
+    /** @var int[]  */
     private array $path;
     private string $previousPathResult = self::RESULT_LOST;
     private int $direction = 1;
 
     /**
      * @param int[] $initialPath
-     * @param string $previousPathResult one of RESULT_CRASHED or RESULT_LOST
      */
     public function __construct(array $initialPath = []) {
         $this->path = $initialPath;
@@ -30,6 +26,10 @@ class DroidPathGenerator
      */
     public function getNewPath(string $oldPathResult): array
     {
+        if (self::RESULT_SUCCESS === $oldPathResult) {
+            return $this->path;
+        }
+
         if (self::RESULT_CRASHED === $oldPathResult && self::RESULT_CRASHED == $this->previousPathResult) {
             \array_pop($this->path);
         }
