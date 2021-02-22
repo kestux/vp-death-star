@@ -36,6 +36,10 @@ class DroidPathGenerator
      */
     public function getNewPath(string $oldPathResult): array
     {
+        if (self::RESULT_CRASHED === $oldPathResult && self::RESULT_CRASHED == $this->previousPathResult) {
+            \array_pop($this->path);
+        }
+
         $nextStep = \end($this->path);
         if (self::RESULT_CRASHED === $oldPathResult) {
             $lastStep = \array_pop($this->path);

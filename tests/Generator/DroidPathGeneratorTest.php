@@ -27,7 +27,7 @@ class DroidPathGeneratorTest extends TestCase
     /**
      * @covers ::getNewPath
      */
-    public function testAdsForwardWhenCrashedAndLastStepWasRight(): void
+    public function testSwitchesForwardWhenCrashedOnRight(): void
     {
         self::assertSame([1, 0], $this->pathGenerator->getNewPath('crashed'));
     }
@@ -35,10 +35,19 @@ class DroidPathGeneratorTest extends TestCase
     /**
      * @covers ::getNewPath
      */
-    public function testAdsForwardWhenCrashedAndLastStepWasLeft(): void
+    public function testSwitchesForwardWhenCrashedOnLeft(): void
     {
         $this->pathGenerator = new DroidPathGenerator([1, -1]);
         self::assertSame([1, 0], $this->pathGenerator->getNewPath('crashed'));
+    }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testGoesBackAndSwitchesForwardAfterCrashingRightAndForward(): void
+    {
+        $this->pathGenerator->getNewPath('crashed'); //[1, 0]
+        self::assertSame([0], $this->pathGenerator->getNewPath('crashed'));
     }
 }
 
