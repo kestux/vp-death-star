@@ -1,0 +1,19 @@
+{
+    "name": "kestux/vp-death-star",
+    "description": "Kestutis Kacinskas Technical Task",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Kestutis Kacinskas",
+            "email": "kacikest@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/console": "^5.2",
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
