@@ -29,15 +29,6 @@ class DroidPathGeneratorTest extends TestCase
      */
     public function testAdsForwardWhenCrashedAndLastStepWasRight(): void
     {
-        self::assertSame([1, 1, 0], $this->pathGenerator->getNewPath('crashed'));
-    }
-
-    /**
-     * @covers ::getNewPath
-     */
-    public function testGoesForwardWhenCrashedTwice(): void
-    {
-        $this->pathGenerator->getNewPath('crashed'); //[1, 1, 0]
         self::assertSame([1, 0], $this->pathGenerator->getNewPath('crashed'));
     }
 }

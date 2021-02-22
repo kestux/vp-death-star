@@ -36,16 +36,10 @@ class DroidPathGenerator
      */
     public function getNewPath(string $oldPathResult): array
     {
-        if (self::RESULT_CRASHED === $this->previousPathResult && self::RESULT_CRASHED === $oldPathResult) {
-            $this->changePreviousPath();
-            $this->previousPathResult = $oldPathResult;
-
-            return $this->path;
-        }
-
         $nextStep = \end($this->path);
         if (self::RESULT_CRASHED === $oldPathResult) {
-            $nextStep = self::changeStep($nextStep);
+            $lastStep = \array_pop($this->path);
+            $nextStep = self::changeStep($lastStep);
         }
 
         \array_push($this->path, $nextStep);
@@ -54,18 +48,10 @@ class DroidPathGenerator
         return $this->path;
     }
 
-    private function changePreviousPath(): void
-    {
-        \array_pop($this->path);
-        $previous = \array_pop($this->path);
-
-        \array_push($this->path, self::changeStep($previous));
-    }
-
     private static function changeStep(int $step): int
     {
         $step --;
 
-        return -1 > $step ? 1 : $step;
+        return -1 > $step ? 0 : $step;
     }
 }
