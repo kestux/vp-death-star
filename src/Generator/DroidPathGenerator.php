@@ -25,7 +25,7 @@ class DroidPathGenerator
      */
     public function getNewPath(string $oldPathResult): array
     {
-        $nextStep = \end($this->path);
+        $nextStep = self::RESULT_LOST  === $oldPathResult ? \end($this->path) : 0;
         \array_push($this->path, $nextStep);
 
         return $this->path;
