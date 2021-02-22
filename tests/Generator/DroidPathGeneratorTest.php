@@ -68,7 +68,7 @@ class DroidPathGeneratorTest extends TestCase
         $this->pathGenerator = new DroidPathGenerator([-1, -1]);
         $this->pathGenerator->getNewPath('crashed'); //[-1, 0]
         $this->pathGenerator->getNewPath('crashed'); //[0]
-        $this->pathGenerator->getNewPath('gone'); //[0, 0]
+        $this->pathGenerator->getNewPath('lost'); //[0, 0]
         self::assertSame([0, 1], $this->pathGenerator->getNewPath('crashed'));
     }
 
@@ -79,7 +79,7 @@ class DroidPathGeneratorTest extends TestCase
     {
         $this->pathGenerator->getNewPath('crashed'); //[1, 0]
         $this->pathGenerator->getNewPath('crashed'); //[0]
-        $this->pathGenerator->getNewPath('gone'); //[0, 0]
+        $this->pathGenerator->getNewPath('lost'); //[0, 0]
         self::assertSame([0, -1], $this->pathGenerator->getNewPath('crashed'));
     }
 
@@ -89,6 +89,15 @@ class DroidPathGeneratorTest extends TestCase
     public function testRetunsOldPathOnSuccess(): void
     {
         self::assertSame([1, 1], $this->pathGenerator->getNewPath('success'));
+    }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testThrowsOnUnknownResult(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->pathGenerator->getNewPath('unknown');
     }
 }
 

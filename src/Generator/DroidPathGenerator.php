@@ -2,11 +2,19 @@
 
 namespace App\Generator;
 
+use http\Exception\InvalidArgumentException;
+
 class DroidPathGenerator
 {
     public const RESULT_CRASHED = 'crashed';
     public const RESULT_LOST = 'lost';
     public const RESULT_SUCCESS = 'success';
+
+    private const ALLOWED_RESULTS = [
+        self::RESULT_CRASHED,
+        self::RESULT_LOST,
+        self::RESULT_SUCCESS,
+    ];
 
     /** @var int[]  */
     private array $path;
@@ -23,9 +31,14 @@ class DroidPathGenerator
     /**
      * @param string $oldPathResult One of RESULT_CRASHED or RESULT_LOST
      * @return int[]
+     * @throws \InvalidArgumentException When old path result is not recognized
      */
     public function getNewPath(string $oldPathResult): array
     {
+        if (!\in_array($oldPathResult, self::ALLOWED_RESULTS)) {
+            throw new \InvalidArgumentException(\sprintf('Unknown result "%s"', $oldPathResult));
+        }
+
         if (self::RESULT_SUCCESS === $oldPathResult) {
             return $this->path;
         }
