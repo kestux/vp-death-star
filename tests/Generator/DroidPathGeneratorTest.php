@@ -117,5 +117,38 @@ class DroidPathGeneratorTest extends TestCase
         $this->pathGenerator = new DroidPathGenerator();
         self::assertSame([0], $this->pathGenerator->getNewPath());
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testCanCoverPath(): void
+    {
+        /*
+         * ### x ####
+         * #####   ##
+         * ####   ###
+         * ###   ####
+         * ##   #####
+         * ###   ####
+         * ####   ###
+         */
+        $gen = new DroidPathGenerator();
+        self::assertSame([0], $gen->getNewPath());
+        self::assertSame([1], $gen->getNewPath('crashed'));
+        self::assertSame([1, 1], $gen->getNewPath('lost'));
+        self::assertSame([1, 0], $gen->getNewPath('crashed'));
+        self::assertSame([1, 0, 0], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, 0], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1], $gen->getNewPath('crashed'));
+        self::assertSame([1, 0, 0, 0, -1, -1], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1, -1, -1], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0], $gen->getNewPath('crashed'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0, 0], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0, 1], $gen->getNewPath('crashed'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0, 1, 1], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0, 1, 1, 1], $gen->getNewPath('lost'));
+        self::assertSame([1, 0, 0, 0, -1, -1, 0, 1, 1, 0], $gen->getNewPath('crashed'));
+    }
 }
 
