@@ -49,5 +49,38 @@ class DroidPathGeneratorTest extends TestCase
         $this->pathGenerator->getNewPath('crashed'); //[1, 0]
         self::assertSame([0], $this->pathGenerator->getNewPath('crashed'));
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testGoesBackAndSwitchesForwardAfterCrashingLeftAndForward(): void
+    {
+        $this->pathGenerator = new DroidPathGenerator([-1, -1]);
+        $this->pathGenerator->getNewPath('crashed'); //[-1, 0]
+        self::assertSame([0], $this->pathGenerator->getNewPath('crashed'));
+    }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testGoesBackAndSwitchesForwardRightAfterCrashingLeftAndForward(): void
+    {
+        $this->pathGenerator = new DroidPathGenerator([-1, -1]);
+        $this->pathGenerator->getNewPath('crashed'); //[-1, 0]
+        $this->pathGenerator->getNewPath('crashed'); //[0]
+        $this->pathGenerator->getNewPath('gone'); //[0, 0]
+        self::assertSame([0, 1], $this->pathGenerator->getNewPath('crashed'));
+    }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testGoesBackAndSwitchesForwardLeftAfterCrashingRightAndForward(): void
+    {
+        $this->pathGenerator->getNewPath('crashed'); //[1, 0]
+        $this->pathGenerator->getNewPath('crashed'); //[0]
+        $this->pathGenerator->getNewPath('gone'); //[0, 0]
+        self::assertSame([0, -1], $this->pathGenerator->getNewPath('crashed'));
+    }
 }
 

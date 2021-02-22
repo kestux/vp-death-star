@@ -13,21 +13,15 @@ class DroidPathGenerator
 
         /** @var int[]  */
     private array $path;
-    private string $previousPathResult;
-    private int $secondLastStep;
+    private string $previousPathResult = self::RESULT_LOST;
+    private int $direction = 1;
 
     /**
      * @param int[] $initialPath
      * @param string $previousPathResult one of RESULT_CRASHED or RESULT_LOST
      */
-    public function __construct(
-        array $initialPath = [],
-        string $previousPathResult = self::RESULT_LOST,
-        int $socndLastStep = self::STEP_LEFT
-    ) {
+    public function __construct(array $initialPath = []) {
         $this->path = $initialPath;
-        $this->previousPathResult = $previousPathResult;
-        $this->secondLastStep = $socndLastStep;
     }
 
     /**
@@ -52,10 +46,15 @@ class DroidPathGenerator
         return $this->path;
     }
 
-    private static function changeStep(int $step): int
+    private function changeStep(int $step): int
     {
-        $step --;
+        $step += $this->direction;
 
-        return -1 > $step ? 0 : $step;
+        if (-1 > $step || 1 < $step) {
+            $step = 0;
+            $this->direction *= -1;
+        }
+
+        return $step;
     }
 }
