@@ -4,15 +4,30 @@ namespace App\Generator;
 
 class DroidPathGenerator
 {
-    private string $previousPath;
+    public const RESULT_CRASHED = 'crashed';
+    public const RESULT_LOST = 'lost';
+    public const RESULT_SUCCESS = 'success';
 
-    public function __construct(string $initialPath = '')
+    /** @var int[]  */
+    private array $path;
+
+    /**
+     * @param int $initialPath
+     */
+    public function __construct(array $initialPath = [])
     {
-        $this->previousPath = $initialPath;
+        $this->path = $initialPath;
     }
 
-    public function getNewPath(int $oldPathResult): string
+    /**
+     * @param string $oldPathResult One of RESULT_CRASHED or RESULT_LOST
+     * @return int[]
+     */
+    public function getNewPath(string $oldPathResult): array
     {
-        return $this->previousPath . 'f';
+        $nextStep = \end($this->path);
+        \array_push($this->path, $nextStep);
+
+        return $this->path;
     }
 }

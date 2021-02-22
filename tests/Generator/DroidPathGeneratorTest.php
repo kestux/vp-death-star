@@ -13,15 +13,15 @@ class DroidPathGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pathGenerator = new DroidPathGenerator('fr');
+        $this->pathGenerator = new DroidPathGenerator([0, 1]);
     }
 
     /**
      * @covers ::getNewPath
      */
-    public function testNewPathElementIsAdded(): void
+    public function testSamePathIsAddedWhenGone(): void
     {
-        self::assertContains($this->pathGenerator->getNewPath(410), ['frr', 'frf']);
+        self::assertSame([0, 1, 1],$this->pathGenerator->getNewPath('lost'));
     }
 }
 
