@@ -43,7 +43,7 @@ class DroidPathGenerator
      * @return int[]
      * @throws \InvalidArgumentException When old path result is not recognized
      */
-    public function getNewPath(string $oldPathResult): array
+    public function getNewPath(string $oldPathResult = self::RESULT_LOST): array
     {
         if (!\in_array($oldPathResult, self::ALLOWED_RESULTS)) {
             throw new \InvalidArgumentException(\sprintf('Unknown result "%s"', $oldPathResult));
@@ -57,7 +57,9 @@ class DroidPathGenerator
             \array_pop($this->path);
         }
 
-        $nextStep = \end($this->path);
+        $nextStep = 0 < \count($this->path) ? \end($this->path) : 0;
+
+
         if (self::RESULT_CRASHED === $oldPathResult) {
             $lastStep = \array_pop($this->path);
             $nextStep = self::changeStep($lastStep);

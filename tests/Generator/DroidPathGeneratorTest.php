@@ -108,5 +108,14 @@ class DroidPathGeneratorTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->pathGenerator->getNewPath('unknown');
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testFirstStepIsForward(): void
+    {
+        $this->pathGenerator = new DroidPathGenerator();
+        self::assertSame([0], $this->pathGenerator->getNewPath());
+    }
 }
 
