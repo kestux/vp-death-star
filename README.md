@@ -7,3 +7,4 @@ An application to guide the Empire sentry droids to reach and reinforce the vuln
 
  * `composer install`
  * `./application.php death-star.droid.control`
+ * `vendor/bin/phpunit`
