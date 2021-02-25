@@ -57,18 +57,29 @@ class DroidPathGenerator
 
         $lastStep = \array_pop($this->path);
 
-        if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_F0REWARD) {
-            \array_push($this->path, self::STEP_F0REWARD);
-            \array_push($this->path, self::STEP_F0REWARD);
-        } else if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_RIGHT) {
-            \array_push($this->path, $lastStep);
-            \array_push($this->path, self::STEP_F0REWARD);
-        } else if (self::RESULT_CRASHED && $lastStep === self::STEP_F0REWARD) {
-            \array_push($this->path, self::STEP_RIGHT);
-        } else if (self::RESULT_CRASHED && $lastStep === self::STEP_RIGHT) {
-            $this->switchLeft($lastStep);
-        } else {
-            throw new \LogicException('Unknown situation happened!');
+        switch ($oldPathResult) {
+            case self::RESULT_LOST:
+                \array_push($this->path, $lastStep);
+                \array_push($this->path, self::STEP_F0REWARD);
+
+                break;
+            case self::RESULT_CRASHED:
+                switch ($lastStep) {
+                    case self::STEP_F0REWARD:
+                        \array_push($this->path, self::STEP_RIGHT);
+
+                        break;
+                    case self::STEP_RIGHT:
+                        $this->switchLeft($lastStep);
+
+                        break;
+                    default:
+                        throw new \LogicException('Unhandled situation');
+                }
+
+                break;
+            default:
+                throw new \LogicException('Unhandled situation');
         }
 
         return $this->path;
