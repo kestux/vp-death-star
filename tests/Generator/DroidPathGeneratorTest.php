@@ -13,7 +13,7 @@ class DroidPathGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->pathGenerator = new DroidPathGenerator([1, 1]);
+        $this->pathGenerator = new DroidPathGenerator();
     }
 
     /**
@@ -30,8 +30,17 @@ class DroidPathGeneratorTest extends TestCase
      */
     public function testFirstStepIsForward(): void
     {
-        $pathGenerator = new DroidPathGenerator();
-        self::assertSame([0], $pathGenerator->getNewPath());
+        self::assertSame([0], $this->pathGenerator->getNewPath());
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testKeepsForwardIfForwardLost(): void
+    {
+        $this->pathGenerator->getNewPath();
+        self::assertSame([0, 0], $this->pathGenerator->getNewPath('lost'));
+    }
+
 }
 
