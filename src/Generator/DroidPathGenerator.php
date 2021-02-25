@@ -60,17 +60,15 @@ class DroidPathGenerator
         if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_F0REWARD) {
             \array_push($this->path, self::STEP_F0REWARD);
             \array_push($this->path, self::STEP_F0REWARD);
-
-            return $this->path;
         } else if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_RIGHT) {
             \array_push($this->path, $lastStep);
             \array_push($this->path, self::STEP_F0REWARD);
-
-            return $this->path;
         } else if (self::RESULT_CRASHED && $lastStep === self::STEP_F0REWARD) {
             \array_push($this->path, self::STEP_RIGHT);
         } else if (self::RESULT_CRASHED && $lastStep === self::STEP_RIGHT) {
             $this->switchLeft($lastStep);
+        } else {
+            throw new \LogicException('Unknown situation happened!');
         }
 
         return $this->path;
