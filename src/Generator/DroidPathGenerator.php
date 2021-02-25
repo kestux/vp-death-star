@@ -58,8 +58,8 @@ class DroidPathGenerator
         $lastStep = \array_pop($this->path);
 
         if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_F0REWARD) {
-            array_push($this->path, self::STEP_F0REWARD);
-            array_push($this->path, self::STEP_F0REWARD);
+            \array_push($this->path, self::STEP_F0REWARD);
+            \array_push($this->path, self::STEP_F0REWARD);
 
             return $this->path;
         } else if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_RIGHT) {
@@ -69,20 +69,20 @@ class DroidPathGenerator
             return $this->path;
         } else if (self::RESULT_CRASHED && $lastStep === self::STEP_F0REWARD) {
             \array_push($this->path, self::STEP_RIGHT);
+        } else if (self::RESULT_CRASHED && $lastStep === self::STEP_RIGHT) {
+            $this->switchLeft($lastStep);
         }
 
         return $this->path;
     }
 
-    private function changeStep(int $step): int
+    private function switchLeft(int $lastStep): void
     {
-        $step += $this->direction;
-
-        if (-1 > $step || 1 < $step) {
-            $step = 0;
-            $this->direction *= -1;
+        while (self::STEP_F0REWARD !== $lastStep) {
+            $lastStep = \array_pop($this->path);
         }
 
-        return $step;
+        \array_push($this->path, $lastStep);
+        \array_push($this->path, self::STEP_LEFT);
     }
 }

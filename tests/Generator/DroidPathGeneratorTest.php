@@ -57,5 +57,16 @@ class DroidPathGeneratorTest extends TestCase
     {
         self::assertSame([0, 1], (new DroidPathGenerator([0, 0]))->getNewPath('crashed'));
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testSwitchesLeftIfRightCrashed(): void
+    {
+        self::assertSame(
+            [0, 1, 0, -1],
+            (new DroidPathGenerator([0, 1, 0, 1, 1, 1]))->getNewPath('crashed')
+        );
+    }
 }
 
