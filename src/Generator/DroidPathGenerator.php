@@ -29,7 +29,7 @@ class DroidPathGenerator
     /**
      * @param int[] $initialPath
      */
-    public function __construct(array $initialPath = [], int $direction = self::STEP_RIGHT) {
+    public function __construct(array $initialPath = [], int $initialDirection = self::STEP_RIGHT) {
         foreach ($initialPath as $step) {
             if (!\in_array($step, self::ALLOWED_STEPS)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -39,8 +39,15 @@ class DroidPathGenerator
             }
         }
 
+        if (!\in_array($initialDirection, self::ALLOWED_STEPS)) {
+            throw new \InvalidArgumentException(sprintf(
+                'Unknown initial direction "%s"',
+                $initialDirection
+            ));
+        }
+
         $this->path = $initialPath;
-        $this->direction = $direction;
+        $this->direction = $initialDirection;
     }
 
     /**

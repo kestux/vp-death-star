@@ -26,6 +26,15 @@ class DroidPathGeneratorTest extends TestCase
     }
 
     /**
+     * @covers ::__construct
+     */
+    public function testThrowsInitialDirectionIsUnknown(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->pathGenerator = new DroidPathGenerator([0], 5);
+    }
+
+    /**
      * @covers ::getNewPath
      */
     public function testFirstStepIsForward(): void
