@@ -24,12 +24,12 @@ class DroidPathGenerator
     /** @var int[]  */
     private array $path;
     private string $previousPathResult = self::RESULT_LOST;
-    private int $direction = 1;
+    private int $direction;
 
     /**
      * @param int[] $initialPath
      */
-    public function __construct(array $initialPath = []) {
+    public function __construct(array $initialPath = [], int $direction = self::STEP_RIGHT) {
         foreach ($initialPath as $step) {
             if (!\in_array($step, self::ALLOWED_STEPS)) {
                 throw new \InvalidArgumentException(sprintf(
@@ -40,6 +40,7 @@ class DroidPathGenerator
         }
 
         $this->path = $initialPath;
+        $this->direction = $direction;
     }
 
     /**
@@ -61,16 +62,18 @@ class DroidPathGenerator
             case self::RESULT_LOST:
                 \array_push($this->path, $lastStep);
                 \array_push($this->path, self::STEP_F0REWARD);
+                $this->direction = 1;
 
                 break;
             case self::RESULT_CRASHED:
                 switch ($lastStep) {
                     case self::STEP_F0REWARD:
-                        \array_push($this->path, self::STEP_RIGHT);
+                        \array_push($this->path, $this->direction);
 
                         break;
                     case self::STEP_RIGHT:
                         $this->switchLeft($lastStep);
+                        $this->direction = self::STEP_LEFT;
 
                         break;
                     default:
