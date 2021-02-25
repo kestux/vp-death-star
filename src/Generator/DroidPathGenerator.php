@@ -10,6 +10,10 @@ class DroidPathGenerator
     public const RESULT_LOST = 'lost';
     public const RESULT_SUCCESS = 'success';
 
+    private const STEP_F0REWARD = 0;
+    private const STEP_LEFT = -1;
+    private const STEP_RIGHT = 1;
+
     private const ALLOWED_RESULTS = [
         self::RESULT_CRASHED,
         self::RESULT_LOST,
@@ -40,33 +44,32 @@ class DroidPathGenerator
 
     /**
      * @param string $oldPathResult One of RESULT_CRASHED or RESULT_LOST
-     * @return int[]
+     * @return int[] new Path
      * @throws \InvalidArgumentException When old path result is not recognized
      */
     public function getNewPath(string $oldPathResult = self::RESULT_LOST): array
     {
-        if (!\in_array($oldPathResult, self::ALLOWED_RESULTS)) {
-            throw new \InvalidArgumentException(\sprintf('Unknown result "%s"', $oldPathResult));
-        }
+        if (empty($this->path)) {
+            \array_push($this->path, self::STEP_F0REWARD);
 
-        if (self::RESULT_SUCCESS === $oldPathResult) {
             return $this->path;
         }
 
-        if (self::RESULT_CRASHED === $oldPathResult && self::RESULT_CRASHED == $this->previousPathResult) {
-            \array_pop($this->path);
+        $lastStep = \array_pop($this->path);
+
+        if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_F0REWARD) {
+            array_push($this->path, self::STEP_F0REWARD);
+            array_push($this->path, self::STEP_F0REWARD);
+
+            return $this->path;
+        } else if (self::RESULT_LOST == $oldPathResult && $lastStep === self::STEP_RIGHT) {
+            \array_push($this->path, $lastStep);
+            \array_push($this->path, self::STEP_F0REWARD);
+
+            return $this->path;
+        } else if (self::RESULT_CRASHED && $lastStep === self::STEP_F0REWARD) {
+            \array_push($this->path, self::STEP_RIGHT);
         }
-
-        $nextStep = 0 < \count($this->path) ? \end($this->path) : 0;
-
-
-        if (self::RESULT_CRASHED === $oldPathResult) {
-            $lastStep = \array_pop($this->path);
-            $nextStep = self::changeStep($lastStep);
-        }
-
-        \array_push($this->path, $nextStep);
-        $this->previousPathResult = $oldPathResult;
 
         return $this->path;
     }
