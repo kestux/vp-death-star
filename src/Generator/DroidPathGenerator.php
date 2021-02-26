@@ -2,8 +2,6 @@
 
 namespace App\Generator;
 
-use http\Exception\InvalidArgumentException;
-
 class DroidPathGenerator
 {
     public const RESULT_CRASHED = 'crashed';
@@ -23,7 +21,6 @@ class DroidPathGenerator
 
     /** @var int[]  */
     private array $path;
-    private string $previousPathResult = self::RESULT_LOST;
     private int $direction;
 
     /**
