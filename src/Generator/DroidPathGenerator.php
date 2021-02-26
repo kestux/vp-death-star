@@ -10,9 +10,9 @@ class DroidPathGenerator
     public const RESULT_LOST = 'lost';
     public const RESULT_SUCCESS = 'success';
 
-    private const STEP_F0REWARD = 0;
-    private const STEP_LEFT = -1;
-    private const STEP_RIGHT = 1;
+    public const STEP_F0REWARD = 0;
+    public const STEP_LEFT = -1;
+    public const STEP_RIGHT = 1;
 
     private const ALLOWED_RESULTS = [
         self::RESULT_CRASHED,
