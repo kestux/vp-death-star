@@ -13,7 +13,7 @@ An application to guide the Empire sentry droids to reach and reinforce the vuln
 
 ## Notes
 
-### Design
+### The design
 Initial idea was to create something like
 ```php
 $droidDispatcher = new App\Dispatcher\DroidDispatcher(
@@ -38,15 +38,15 @@ $status = $this->droidDispatcher
 
 ```
 
-That approach would allow me to avoid that spaghetti code in the `DroidControlCommand::execute` and would give possibility for a much nicer unit test coverage.
+That approach would allow me to avoid the spaghetti code in the `DroidControlCommand::execute` and would give possibility for a much nicer unit test coverage.
 
-However, it would be a week...ish length task so after creating nice path generator with 100% code coverage I've decided to go against my beliefs and write spaghetti with very bad unit coverage.
+However, it would be a week...ish length task so after creating nice path generator with 100% code coverage I've decided to go against my beliefs and write spaghetti with the very bad unit coverage.
 
-I hope the `DroidPathGenerator` will give you a pretty good view of the way I'm coding and encourage other to follow it.
+I hope the `DroidPathGenerator` will give you a pretty good idea of the way I'm coding and encouraging other to follow that.
 
-### Array path returned form `DroidPathGenerator`
+### Integer array path returned from `DroidPathGenerator`
 
-Initially I was doing 
+Initially I was doing the following:
 
 ```php
 $this->direction--;
@@ -55,4 +55,10 @@ if (self::STEP_LEFT > $this->direction) {
 }
 ```
 
-However, the next morning I realised that such approach might lead into live-lock with droid stuck bouncing right-left. So decided to rework all the algorithm by trying to reuse old test as much as possible and stayed with the array approach.
+So the `int` array from `-1` to `1` was very handy for the algorithm. 
+
+However, the next morning I realised that such approach might lead into live-lock with droid stuck bouncing from right to left and back. So decided to rework all the algorithm by trying to reuse old tests as much as possible thus stayed with the `int` array approach.
+
+### `Try/catch` for `Client::request`
+
+I absolutely forgot that `GuzzleHttp` client throws `RequestException` on `4xx` responses. However, the big functional test for the command was written, and I didn't want to rewrite it. :)
