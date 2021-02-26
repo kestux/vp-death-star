@@ -77,19 +77,7 @@ class DroidPathGenerator
 
                 break;
             case self::RESULT_CRASHED:
-                switch ($lastStep) {
-                    case self::STEP_F0REWARD:
-                        \array_push($this->path, $this->direction);
-
-                        break;
-                    case self::STEP_RIGHT:
-                        $this->switchLeft($lastStep);
-                        $this->direction = self::STEP_LEFT;
-
-                        break;
-                    default:
-                        throw new \LogicException('Unhandled situation');
-                }
+                $this->handleCrashed($lastStep);
 
                 break;
             default:
@@ -97,6 +85,23 @@ class DroidPathGenerator
         }
 
         return $this->path;
+    }
+
+    private function handleCrashed(int $lastStep): void
+    {
+        switch ($lastStep) {
+            case self::STEP_F0REWARD:
+                \array_push($this->path, $this->direction);
+
+                break;
+            case self::STEP_RIGHT:
+                $this->switchLeft($lastStep);
+                $this->direction = self::STEP_LEFT;
+
+                break;
+            default:
+                throw new \LogicException('Unhandled situation');
+        }
     }
 
     private function switchLeft(int $lastStep): void
