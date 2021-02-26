@@ -99,5 +99,14 @@ class DroidPathGeneratorTest extends TestCase
             (new DroidPathGenerator([0, 1, 0, 1, 1, 1]))->getNewPath('success')
         );
     }
+
+    /**
+     * @covers ::getNewPath
+     */
+    public function testThrowsIfResultIsNotRecognized(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->pathGenerator->getNewPath('unknown');
+    }
 }
 

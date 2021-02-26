@@ -40,10 +40,7 @@ class DroidPathGenerator
         }
 
         if (!\in_array($initialDirection, self::ALLOWED_STEPS)) {
-            throw new \InvalidArgumentException(sprintf(
-                'Unknown initial direction "%s"',
-                $initialDirection
-            ));
+            throw new \InvalidArgumentException(sprintf('Unknown initial direction "%s"', $initialDirection));
         }
 
         $this->path = $initialPath;
@@ -57,6 +54,10 @@ class DroidPathGenerator
      */
     public function getNewPath(string $oldPathResult = self::RESULT_LOST): array
     {
+        if (!\in_array($oldPathResult, self::ALLOWED_RESULTS)) {
+            throw new \InvalidArgumentException(sprintf('Unknown old path result: "%s"', $oldPathResult));
+        }
+
         if (self::RESULT_SUCCESS === $oldPathResult) {
             return $this->path;
         }
