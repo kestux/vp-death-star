@@ -62,3 +62,7 @@ However, the next morning I realised that such approach might lead into live-loc
 ### `Try/catch` for `Client::request`
 
 I absolutely forgot that `GuzzleHttp` client throws `RequestException` on `4xx` responses. However, the big functional test for the command was written, and I didn't want to rewrite it. :)
+
+### Dependency Injection
+
+In the real world I would create a `services.yaml` (_Symfony_ config file), where I would define all the dependencies, but wanted to save some precious time on setting up the `Kernel` and the `Container`.
