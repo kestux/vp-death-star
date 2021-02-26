@@ -8,7 +8,7 @@ class DroidPathGenerator
     public const RESULT_LOST = 'lost';
     public const RESULT_SUCCESS = 'success';
 
-    public const STEP_F0REWARD = 0;
+    public const STEP_FORWARD = 0;
     public const STEP_LEFT = -1;
     public const STEP_RIGHT = 1;
 
@@ -60,7 +60,7 @@ class DroidPathGenerator
         }
 
         if (empty($this->path)) {
-            \array_push($this->path, self::STEP_F0REWARD);
+            \array_push($this->path, self::STEP_FORWARD);
 
             return $this->path;
         }
@@ -70,7 +70,7 @@ class DroidPathGenerator
         switch ($oldPathResult) {
             case self::RESULT_LOST:
                 \array_push($this->path, $lastStep);
-                \array_push($this->path, self::STEP_F0REWARD);
+                \array_push($this->path, self::STEP_FORWARD);
                 $this->direction = 1;
 
                 break;
@@ -88,7 +88,7 @@ class DroidPathGenerator
     private function handleCrashed(int $lastStep): void
     {
         switch ($lastStep) {
-            case self::STEP_F0REWARD:
+            case self::STEP_FORWARD:
                 \array_push($this->path, $this->direction);
 
                 break;
@@ -104,7 +104,7 @@ class DroidPathGenerator
 
     private function switchLeft(int $lastStep): void
     {
-        while (self::STEP_F0REWARD !== $lastStep) {
+        while (self::STEP_FORWARD !== $lastStep) {
             $lastStep = \array_pop($this->path);
         }
 
