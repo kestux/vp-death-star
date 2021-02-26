@@ -5,6 +5,8 @@ An application to guide the Empire sentry droids to reach and reinforce the vuln
 
 ## Setup and run
 
- * `composer install`
- * `./application.php death-star.droid.control`
- * `vendor/bin/phpunit`
+ * Install: `composer install`
+ * Simple run: `./application.php death-star.droid.control`
+ * All tests: `vendor/bin/phpunit`
+ * Info about CLI command: `./application.php death-star.droid.control -h`
+ * Change number of total droids to send: `./application.php death-star.droid.control -s 10`
